@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Open Sans', sans-serif;
+        }
+        .maindiv{
+            width: 100%;
+            height: 100vh;
+            position: relative;
+            background-color: #3498db;
+        }
+        h1{
+            text-transform: capitalize;
+            margin-bottom: 30px;
+            color: #ecf0f1;
+            text-shadow: 1px 2px 3px #2980b9;
+            font-size: 2.1rem;
+        }
+        h2{
+            text-align: center;
+        }
+
+        textarea{
+            background-color: #444;
+            box-shadow: 0 0 1px rgba(0, 0, 0, 0.2);
+            border-radius: 10px 10px 0 0 ;
+            border: 20px solid #34495e;
+            color: white;
+            cursor: pointer;
+        }
+        .centerdiv{
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            text-align: center;
+        }
+        .mainbtn{
+            padding: 10px 20px;
+            border-radius: 20px;
+            background: #ecf0f1;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="maindiv">
+        <div class="centerdiv">
+               <h1>Welcome to Typing Speed Test</h1>
+               <h2 id="msg"></h2>
+               <br>
+               <textarea id="mywords" cols="100" rows="10" placeholder="Start typing"></textarea>
+               <br>
+               <button id="btn" class="mainbtn">Start</button> 
+        </div>
+
+    </div>
+
+    <script>
+        const setOfWords = ["My name is Jagjeet",
+                           "I am Learning Javascript",
+                           "I made this simple application of typing speed testing" ];
+
+        const msg = document.getElementById('msg');
+        const typingWords = document.getElementById('mywords');
+        const btn = document.getElementById('btn');
+        let startTime, endTime;
+
+        const playGame = () => {
+            let randomNumber = Math.floor(Math.random()*setOfWords.length);
+            msg.innerText = setOfWords[randomNumber];
+            let date = new Date();
+            startTime = date.getTime();
+            btn.innerText = "Done";
+        }
+
+        const endPlay = () =>{
+            let date = new Date;
+            endTime = date.getTime();
+            let totalTime = ((endTime - startTime)/1000);
+            console.log(totalTime);
+            let totalStr = typingWords.value;
+            let wordsCount = wordCount(totalStr);
+            let speed = Math.round((wordsCount/totalTime)*60);
+            let finalMsg = "You typed total at " +speed+ " words per minute";
+            finalMsg += compareWords(msg.innerText,totalStr);
+            msg.innerText = finalMsg;
+        }
+
+        const wordCount = (str) => {
+            let response = str.split(" ").length;
+            console.log(response);
+            return response;
+        }
+
+        const compareWords = (str1,str2) =>{
+            let words1 = str1.split(" ");
+            let words2 = str2.split(" ");
+            let cnt = 0;
+
+            words1.forEach(function(item,index){
+                if (item == words2[index]){
+                    cnt++;
+                }
+            })
+
+            let errorWords = ( words1.length - cnt);
+            return (" "+cnt+ " correct out of " +words1.length+ " words and the total number of error is " + errorWords + ".");
+        }
+        btn.addEventListener('click',function(){
+            if(this.innerText == 'Start'){
+                typingWords.disabled = false;
+                playGame();
+            }else if(this.innerText == 'Done')
+                {typingWords.disabled = true;
+                btn.innerText ="Start";
+                endPlay();}
+            
+         } )                  
+    </script>
+</body>
+</html>
